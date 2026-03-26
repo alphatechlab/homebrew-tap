@@ -9,6 +9,10 @@ cask "webmux" do
 
   app "Webmux.app"
 
+  postflight do
+    system_command "/usr/bin/xattr", args: ["-cr", "#{appdir}/Webmux.app"]
+  end
+
   zap trash: [
     "~/Library/LaunchAgents/com.user.webmux.plist",
     "~/Library/LaunchAgents/com.user.webmux-whisper.plist",
