@@ -8,6 +8,7 @@ class Webmux < Formula
   depends_on "node"
   depends_on "rust" => :build
   depends_on "python@3"
+  depends_on "ffmpeg"
 
   def install
     # 1. Build Alacritty sidecar
