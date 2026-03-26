@@ -2,7 +2,7 @@ class Webmux < Formula
   desc "Web-based terminal with persistent sessions via Alacritty sidecar"
   homepage "https://github.com/alphatechlab/webmux"
   url "https://github.com/alphatechlab/webmux.git", branch: "main"
-  version "0.1.1"
+  version "0.1.2"
   license "MIT"
 
   depends_on "node"
