@@ -17,9 +17,10 @@ class Webmux < Formula
       bin.install "target/release/alacritty-sidecar"
     end
 
-    # 2. Install Node dependencies and build
-    system "npm", "install", "--omit=dev"
+    # 2. Install ALL deps (including devDeps for tsc/vite), build, then prune
+    system "npm", "install"
     system "npm", "run", "build"
+    system "npm", "prune", "--omit=dev"
 
     # 3. Install server + client assets to libexec
     libexec.install "dist", "node_modules", "package.json", "config.example.cjs"
@@ -29,14 +30,11 @@ class Webmux < Formula
                                     "whisper/install.sh", "whisper/config.example.yaml"]
 
     # 5. Create wrapper script
-    (bin/"webmux").write_env_script libexec/"dist/server/index.js",
-      NODE_ENV: "production",
-      PATH:     "#{Formula["node"].opt_bin}:$PATH"
-
-    # Make wrapper use node explicitly
-    inreplace bin/"webmux" do |s|
-      s.gsub!(/^exec /, "exec #{Formula["node"].opt_bin}/node ")
-    end
+    node = Formula["node"].opt_bin/"node"
+    (bin/"webmux").write <<~EOS
+      #!/bin/bash
+      exec #{node} "#{libexec}/dist/server/index.js" "$@"
+    EOS
   end
 
   def post_install
