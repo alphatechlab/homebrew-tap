@@ -1,8 +1,8 @@
 class Webmux < Formula
-  desc "Web-based terminal with persistent sessions via Alacritty sidecar"
+  desc "Web-based terminal with persistent sessions via webmux-term"
   homepage "https://github.com/alphatechlab/webmux"
   url "https://github.com/alphatechlab/webmux.git", branch: "main"
-  version "0.1.2"
+  version "0.1.3"
   license "MIT"
 
   depends_on "node"
@@ -11,10 +11,10 @@ class Webmux < Formula
   depends_on "ffmpeg"
 
   def install
-    # 1. Build Alacritty sidecar
-    cd "alacritty-sidecar" do
+    # 1. Build webmux-term sidecar
+    cd "webmux-term" do
       system "cargo", "build", "--release"
-      bin.install "target/release/alacritty-sidecar"
+      bin.install "target/release/webmux-term" => "alacritty-sidecar"
     end
 
     # 2. Install ALL deps (including devDeps for tsc/vite), build, then prune
@@ -57,7 +57,7 @@ class Webmux < Formula
       Whisper (optional voice input, macOS Apple Silicon only):
         cd #{libexec}/whisper && bash install.sh
 
-      The webmux-client app manages services automatically.
+      The webmux-app manages services automatically.
     EOS
   end
 
